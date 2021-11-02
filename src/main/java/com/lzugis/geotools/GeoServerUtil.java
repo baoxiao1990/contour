@@ -17,84 +17,14 @@ import java.util.ResourceBundle;
 import java.util.List;
 
 public class GeoServerUtil {
-//    public static final String RESTURL;
-//
-//    public static final String RESTUSER;
-//
-//    public static final String RESTPW;
-//
-//    public static final String GS_VERSION;
-//
-//    public static java.net.URL URL;
-//
-//    public static GeoServerRESTManager manager;
-//
-//    public static GeoServerRESTReader reader;
-//
-//    public static GeoServerRESTPublisher publisher;
-//
-//    private static ResourceBundle bundle = ResourceBundle.getBundle("constant");
-//
-//    //初始化用户名密码赋值,发布图集时会进行身份认证
-//    static {
-//        RESTURL = getenv("gsmgr_resturl", "http://localhost:18080/geoserver/");
-//        RESTUSER = getenv("gsmgr_restuser","admin");
-//        RESTPW = getenv("gsmgr_restpw", "geoserver");
-//        GS_VERSION = getenv("gsmgr_version", "2.11.2");
-//        try {
-//            URL = new URL(RESTURL);
-//            manager = new GeoServerRESTManager(URL, RESTUSER, RESTPW);
-//            reader = manager.getReader();
-//            publisher = manager.getPublisher();
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    //获取环境信息
-//    private static String getenv(String envName, String envDefault) {
-//        String env = System.getenv(envName);
-//        String prop = System.getProperty(envName, env);
-//        return prop != null ? prop : envDefault;
-//    }
-//
-//    public  static boolean  publishShpAndReloadStore(String workspace,String zipFilePath,String storeName,String layerName,String styleType,String coordinateSystem) throws  Exception{
-//        //坐标系,判断是否为空
-//        if(ComUtil.isEmpty(coordinateSystem)){
-//            coordinateSystem=GeoServerRESTPublisher.DEFAULT_CRS;
-//        }
-//        //存在相应的工作区
-//        if(!reader.existsWorkspace(workspace)){
-//            publisher.createWorkspace(workspace);
-//        }
-//        boolean published;
-//        if(Constant.AtlasStyleType.ATLAS_STYLE_TYPE_5.equals(styleType)){
-//            published = publisher.publishShp(workspace, storeName, layerName, new File(zipFilePath),coordinateSystem,
-//                    new NameValuePair[]{new NameValuePair("charset", "GBK")});
-//        }else{
-//            //读取style文件
-//            String styleFile = bundle.getString("geoServer-dir")+"/"+styleType+".sld";
-//            File file  = new File(styleFile);
-//            String strStyle = "style"+styleType;
-//            //是否已经发布了改style
-//            if(!reader.existsStyle(workspace,strStyle)){
-//                publisher.publishStyleInWorkspace(workspace,file,strStyle);
-//            }
-//            //创建发布类,放入用户名密码和url
-//            GeoServerRESTPublisher geoServerRESTPublisher  =new GeoServerRESTPublisher(RESTURL,RESTUSER,RESTPW);
-//            //工作区      数据存储名称
-//            published =geoServerRESTPublisher.publishShp( workspace,  storeName, new NameValuePair[]{new NameValuePair("charset", "GBK")},
-//                    //图层名称               指定用于发布资源的方法
-//                    layerName, it.geosolutions.geoserver.rest.GeoServerRESTPublisher.UploadMethod.FILE,
-//                    //        zip图集的地址           坐标系         样式
-//                    new File(zipFilePath).toURI(),coordinateSystem, strStyle);
-//        }
-//        return published;
-//    }
-//
-//    public static boolean unPublishShpAndReloadStore(String workspace,String storeName){
-//        return publisher.removeLayer(workspace,storeName);
-//    }
+    public static void main(String[] args) throws IOException {
+        //GeoServer的连接配置
+        String url = "http://localhost:8080/geoserver" ;
+        String username = "admin" ;
+        String passwd = "geoserver" ;
+        //GeoserverPublishPostGISData(url, username, passwd);
+        GeoserverPublishShapefileData(url, username, passwd);
+    }
 
     //发布shapefile数据
     public static void GeoserverPublishShapefileData(String url,String username,String passwd) throws IOException {
@@ -106,12 +36,14 @@ public class GeoServerUtil {
         File zipFile=new File("D:/code/projects/javaProjs/geotoolsStartup2/out/contour.zip");
         String layername="contour";//图层名称
         //shp文件所在的位置
-        String urlDatastore="file://D:/code/projects/javaProjs/geotoolsStartup2/out/contour.shp";
+        String urlDatastore="file:/D:/code/projects/javaProjs/geotoolsStartup2/out/contour.shp";
         //判断工作区（workspace）是否存在，不存在则创建
         URL u = new URL(url);
+        System.out.printf("u:%s\n", u.toString());
+
         //获取管理对象
         GeoServerRESTManager manager = new GeoServerRESTManager(u, username, passwd);
-        System.out.printf("manager:%s\n", manager.toString());
+        System.out.printf("manager:%s\n", manager);
         //获取发布对象
         GeoServerRESTPublisher publisher = manager.getPublisher() ;
         //获取所有的工作空间名称
@@ -144,13 +76,8 @@ public class GeoServerUtil {
             boolean publish = manager.getPublisher().publishShp(ws, store_name, layername, zipFile, srs);
             System.out.println("publish : " + publish);
         }else {
-
             System.out.println("表已经发布过了,table:" + store_name);
         }
-
     }
-
-
-
 
 }

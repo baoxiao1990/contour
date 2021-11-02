@@ -324,14 +324,14 @@ public class EquiSurfaceLine {
             String strJson = equiSurface.calEquiSurface(trainData, dataInterval, size, boundryFile, isclip);
             String strFile = rootPath + "/out/result.geojson";
             PrintStream ps = new PrintStream(strFile);
-            System.setOut(ps);//把创建的打印输出流赋给系统。即系统下次向 ps输出
+//            System.setOut(ps);//把创建的打印输出流赋给系统。即系统下次向 ps输出
 
-            System.out.printf("strJson:%s",strJson);
+//            System.out.printf("strJson:%s",strJson);
             equiSurface.append2File(strFile, strJson);
 
             String shpFile = rootPath + "/out/contour.shp";
             Map map = FileFormat.geojson2Shape(strFile, shpFile);
-            System.out.println(map);
+//            System.out.println(map);
 
             //GeoServer的连接配置
             String url = "http://localhost:8080/geoserver" ;
