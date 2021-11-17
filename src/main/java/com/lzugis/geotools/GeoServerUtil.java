@@ -19,7 +19,7 @@ import java.util.List;
 public class GeoServerUtil {
     public static void main(String[] args) throws IOException {
         //GeoServer的连接配置
-        String url = "http://localhost:8080/geoserver" ;
+        String url = "http://192.168.31.112:8080/geoserver" ;
         String username = "admin" ;
         String passwd = "geoserver" ;
         //GeoserverPublishPostGISData(url, username, passwd);
@@ -39,7 +39,7 @@ public class GeoServerUtil {
         String urlDatastore="file:/D:/code/projects/javaProjs/geotoolsStartup2/out/contour.shp";
         //判断工作区（workspace）是否存在，不存在则创建
         URL u = new URL(url);
-        System.out.printf("u:%s\n", u.toString());
+        System.out.printf("u:%s\n", u);
 
         //获取管理对象
         GeoServerRESTManager manager = new GeoServerRESTManager(u, username, passwd);
